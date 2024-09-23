@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manager", "Manager", "{3CCE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALC.Docker.Manager.API", "src\Services\Manager\ALC.Docker.Manager.API\ALC.Docker.Manager.API.csproj", "{8E42ED39-3304-45C3-AA37-E05DE9E9B5CE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{41B75BD1-BCAD-487B-91EA-DFE8ADB94D35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALC.Docker.Manager.API.Tests", "src\Tests\ALC.Docker.Manager.API.Tests\ALC.Docker.Manager.API.Tests.csproj", "{B764FEDA-E68C-4E14-B329-D7F5BA8809DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,10 @@ Global
 		{8E42ED39-3304-45C3-AA37-E05DE9E9B5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E42ED39-3304-45C3-AA37-E05DE9E9B5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E42ED39-3304-45C3-AA37-E05DE9E9B5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B764FEDA-E68C-4E14-B329-D7F5BA8809DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B764FEDA-E68C-4E14-B329-D7F5BA8809DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B764FEDA-E68C-4E14-B329-D7F5BA8809DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B764FEDA-E68C-4E14-B329-D7F5BA8809DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -28,5 +36,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3CCEE7D9-EE0C-43E4-B402-DD0C1C382A0E} = {2210923B-74DC-48DC-BA92-C826ADD4F6F7}
 		{8E42ED39-3304-45C3-AA37-E05DE9E9B5CE} = {3CCEE7D9-EE0C-43E4-B402-DD0C1C382A0E}
+		{B764FEDA-E68C-4E14-B329-D7F5BA8809DB} = {41B75BD1-BCAD-487B-91EA-DFE8ADB94D35}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,16 @@
 @ALC.Docker.Manager.API_HostAddress = http://localhost:5250
 
-GET {{ALC.Docker.Manager.API_HostAddress}}/weatherforecast/
+
+###
+GET {{ALC.Docker.Manager.API_HostAddress}}/api/container/list
 Accept: application/json
 
 ###
+//Start
+GET {{ALC.Docker.Manager.API_HostAddress}}/api/container/start/549c9a5c1ac0301cd4c67462de419707465779622fcff68407eaa9c9d5262e53
+Accept: application/json
+
+###
+//Stop
+GET {{ALC.Docker.Manager.API_HostAddress}}/api/container/stop/549c9a5c1ac0301cd4c67462de419707465779622fcff68407eaa9c9d5262e53
+Accept: application/json

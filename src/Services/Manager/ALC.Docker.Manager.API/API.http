@@ -1,8 +1,0 @@
-GET http://localhost:5250/api/container/list
-###
-//Start
-GET http://localhost:5250/api/container/start/549c9a5c1ac0301cd4c67462de419707465779622fcff68407eaa9c9d5262e53
-
-###
-//Stop
-GET http://localhost:5250/api/container/stop/549c9a5c1ac0301cd4c67462de419707465779622fcff68407eaa9c9d5262e53
