@@ -9,17 +9,17 @@ namespace ALC.Docker.Manager.API.Controllers
     public class ContainerController : ControllerBase
     {
         private readonly ILogger<ContainerController> _logger;
-        private readonly IDockerService dockerService;
-        public ContainerController(ILogger<ContainerController> logger)
+        private readonly IDockerService _dockerService;
+        public ContainerController(ILogger<ContainerController> logger, IDockerService dockerService)
         {
             _logger = logger;
-            dockerService = new DockerServiceUnix();
+            _dockerService = dockerService;
         }
 
         [HttpGet("list")]
         public async Task<ICollection<Container>> List(int limit = 10)
         {
-            var containers = (await dockerService.GetAll(limit)).ToList()
+            var containers = (await _dockerService.GetAll(limit)).ToList()
                 .ConvertAll(c => new Container(c, Models.Environment.Docker));
             return containers;
         }
@@ -27,28 +27,28 @@ namespace ALC.Docker.Manager.API.Controllers
         [HttpGet("start/{id}")]
         public async Task<IActionResult> Start(string id)
         {
-            var containers = await dockerService.GetAll(null);
+            var containers = await _dockerService.GetAll(null);
 
             var container = containers.FirstOrDefault(c => c.ID.Contains(id, StringComparison.OrdinalIgnoreCase));
             if (container is null)
             {
                 return NotFound();
             }
-            await dockerService.Start(container.ID);
+            await _dockerService.Start(container.ID);
             return NoContent();
         }
 
         [HttpGet("stop/{id}")]
         public async Task<IActionResult> Stop(string id)
         {
-            var containers = await dockerService.GetAll(null);
+            var containers = await _dockerService.GetAll(null);
 
             var container = containers.FirstOrDefault(c => c.ID.Contains(id, StringComparison.OrdinalIgnoreCase));
             if (container is null)
             {
                 return NotFound();
             }
-            await dockerService.Stop(container.ID);
+            await _dockerService.Stop(container.ID);
             return NoContent();
         }
 

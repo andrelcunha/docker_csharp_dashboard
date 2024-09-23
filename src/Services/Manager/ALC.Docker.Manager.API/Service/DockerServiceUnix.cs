@@ -1,29 +1,37 @@
+using ALC.Docker.Manager.API.Extensions;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Microsoft.Extensions.Options;
 
 namespace ALC.Docker.Manager.API.Service;
 
 public class DockerServiceUnix:IDockerService
 {
+    private readonly ILogger<IDockerService> _logger;
     private readonly DockerClient client;
-    private readonly string uri = "unix:///var/run/docker.sock";
-    public DockerServiceUnix()
+    private readonly string _uri = string.Empty;//= "unix:///var/run/docker.sock";
+
+    public DockerServiceUnix(ILogger<IDockerService>  logger, IOptions<AppSetting> appSettings)
     {
-        client = new DockerClientConfiguration(new Uri(uri)).CreateClient();
+        _logger = logger;
+#pragma warning disable CS8601 // Possible null reference assignment.
+        _uri = appSettings.Value.DockerClientDockerUri;
+
+#pragma warning restore CS8601 // Possible null reference assignment.
+        if (string.IsNullOrEmpty(_uri)) 
+        {
+            logger.LogCritical("The DockerClientDockerUri setting is empty or not found");
+            Environment.Exit(1);
+        }
+        
+        client = new DockerClientConfiguration(new Uri(_uri)).CreateClient();
     }
 
     public async Task<IList<ContainerListResponse>> GetAll(int? limit)
     {
-        ContainersListParameters parameters;
-
-        if (limit is not null) 
-        {
-            parameters = new ContainersListParameters() {Limit = limit};
-        }
-        else
-        {
-            parameters = new ContainersListParameters() {All = true };
-        }
+        var parameters = limit.HasValue
+                ? new ContainersListParameters { Limit = limit.Value }
+                : new ContainersListParameters { All = true };
             
         return await client.Containers.ListContainersAsync(parameters);
     }

@@ -1,4 +1,7 @@
 
+using ALC.Docker.Manager.API.Extensions;
+using ALC.Docker.Manager.API.Service;
+
 namespace ALC.Docker.Manager.API;
 
 public class Program
@@ -7,7 +10,13 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        //Get AppSettings
+        var appSettingsSection = builder.Configuration.GetSection("AppSetting");
+        builder.Services.Configure<AppSetting>(appSettingsSection);
+
+
         // Add services to the container.
+        builder.Services.AddScoped<IDockerService, DockerServiceUnix>();
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
