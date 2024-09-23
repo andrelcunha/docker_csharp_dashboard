@@ -1,0 +1,2 @@
+GET http://localhost:5250/api/container
+Accept: application/json

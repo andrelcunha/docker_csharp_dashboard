@@ -1,0 +1,6 @@
+@ALC.Docker.Manager.API_HostAddress = http://localhost:5250
+
+GET {{ALC.Docker.Manager.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
