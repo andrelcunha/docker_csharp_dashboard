@@ -3,6 +3,8 @@ using ALC.Docker.Manager.API.Service;
 using Microsoft.Extensions.Logging;
 using ALC.Docker.Manager.API.Controllers;
 using Docker.DotNet.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ALC.Docker.Manager.API.Tests;
 
@@ -36,6 +38,44 @@ public class ContainerControllerTests
 
         //Assert
         Assert.Equal(2, result.Count);
+    }
+
+    [Fact]
+    public async Task Start_ValidId_ReturnNoContent()
+    {
+        //Arrange
+        var mockContainers = new List<ContainerListResponse> 
+        {
+            new ContainerListResponse { ID = "1" }
+        };
+
+        _mockDockerService.Setup(service => service.GetAll(null))
+            .ReturnsAsync(mockContainers);
+        
+        _mockDockerService.Setup(service => service.Start("1"))
+            .Returns(Task.CompletedTask);
+        
+        //Act
+        var result = await _controller.Start("1");
+
+        //Assert
+        Assert.IsType<NoContentResult>(result);
+
+    }
+
+    [Fact]
+    public async Task Start_InvalidId_ReturnsNotFound()
+    {
+        //Arrange
+        var mockContainers = new List<ContainerListResponse> ();
+        _mockDockerService.Setup(service => service.GetAll(null))
+            .ReturnsAsync(mockContainers);
+
+        //Act
+        var result = await _controller.Start("invalid");
+
+        //Assert
+        Assert.IsType<NotFoundResult>(result);
     }
 
 }
