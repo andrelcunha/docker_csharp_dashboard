@@ -78,4 +78,38 @@ public class ContainerControllerTests
         Assert.IsType<NotFoundResult>(result);
     }
 
+    [Fact]
+    public async Task Stop_ValidId_NoContent()
+    {
+        //Arrange
+        var mockContainers = new List<ContainerListResponse> ()
+        {
+            new ContainerListResponse { ID = "1"}
+        };
+
+        _mockDockerService.Setup(service => service.GetAll(null))
+            .ReturnsAsync(mockContainers);
+
+        //Act
+        var result = await _controller.Stop("1");
+
+        //Assert
+        Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public async Task Stop_Invalid_NotFound()
+    {
+        //Arrange
+        var mockContainers = new List<ContainerListResponse> ();
+        _mockDockerService.Setup(service => service.GetAll(null))
+            .ReturnsAsync(mockContainers);
+
+        //Act
+        var result = await _controller.Stop("invalid");
+
+        //Assert
+        Assert.IsType<NotFoundResult>(result);
+    }
+
 }
