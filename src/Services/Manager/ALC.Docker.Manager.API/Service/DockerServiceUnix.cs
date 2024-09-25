@@ -8,7 +8,7 @@ namespace ALC.Docker.Manager.API.Service;
 public class DockerServiceUnix:IDockerService
 {
     private readonly ILogger<IDockerService> _logger;
-    private readonly DockerClient client;
+    private readonly DockerClient _client;
     private readonly string _uri = string.Empty;//= "unix:///var/run/docker.sock";
 
     public DockerServiceUnix(ILogger<IDockerService>  logger, IOptions<AppSetting> appSettings)
@@ -24,7 +24,7 @@ public class DockerServiceUnix:IDockerService
             Environment.Exit(1);
         }
         
-        client = new DockerClientConfiguration(new Uri(_uri)).CreateClient();
+        _client = new DockerClientConfiguration(new Uri(_uri)).CreateClient();
     }
 
     public async Task<IList<ContainerListResponse>> GetAll(int? limit)
@@ -33,23 +33,54 @@ public class DockerServiceUnix:IDockerService
                 ? new ContainersListParameters { Limit = limit.Value }
                 : new ContainersListParameters { All = true };
             
-        return await client.Containers.ListContainersAsync(parameters);
+        return await _client.Containers.ListContainersAsync(parameters);
     }
 
     public async Task Start(string id)
     {
-        await client.Containers.StartContainerAsync(id, new ContainerStartParameters());
+        await _client.Containers.StartContainerAsync(id, new ContainerStartParameters());
     } 
 
     public async Task Stop(string id)
     {
         // var timeToWait = 30;
-        var stopped = await client.Containers.StopContainerAsync(id,
+        var stopped = await _client.Containers.StopContainerAsync(id,
         new ContainerStopParameters
         {
             WaitBeforeKillSeconds = null
         },
         CancellationToken.None);
+    }
+    
+    public async Task<string> GetStatus(string id)
+    {
+        var containerInspectResponse = await _client.Containers.InspectContainerAsync(id);
+        var status = containerInspectResponse.State.Status;
+        return status;
+    }
+
+    public async Task<ICollection<ImagesListResponse>> ListImages(string value)
+    {
+        // throw new NotImplementedException();
+        var parameters = new ImagesListParameters();
+        var images = await _client.Images.ListImagesAsync(parameters);
+
+        return images;
+    }
+
+    public async Task<string> CreateContainerFromImage(string name, string image)
+    {
+        var hostConfig = new HostConfig();
+        var parameters = new CreateContainerParameters
+        {
+            Image = image,
+            Name = name,
+            HostConfig = hostConfig,
+
+        };
+
+        var container = await _client.Containers.CreateContainerAsync(parameters);
+        return container.ID;
     }
 
 }
