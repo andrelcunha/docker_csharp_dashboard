@@ -83,4 +83,9 @@ public class DockerServiceUnix:IDockerService
         return container.ID;
     }
 
+    public async Task Delete(string id)
+    {
+        var parameters = new ContainerRemoveParameters();
+        await _client.Containers.RemoveContainerAsync(id,parameters);
+    }
 }

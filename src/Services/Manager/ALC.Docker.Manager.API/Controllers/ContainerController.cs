@@ -52,5 +52,19 @@ namespace ALC.Docker.Manager.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var containers = await _dockerService.GetAll(null);
+
+            var container = containers.FirstOrDefault(c => c.ID.Contains(id, StringComparison.OrdinalIgnoreCase));
+            if (container is null)
+            {
+                return NotFound();
+            }
+            await _dockerService.Delete(container.ID);
+            return Ok();
+        }
+
     }
 }

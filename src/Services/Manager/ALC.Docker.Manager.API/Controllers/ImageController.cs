@@ -17,7 +17,7 @@ namespace ALC.Docker.Manager.API.Controllers
             _dockerService = dockerService;
         }
 
-        [HttpGet("List")]
+        [HttpGet("ListAvalible")]
         public async Task<ICollection<ImagesListResponse>> List(){
             var images = await _dockerService.ListImages(string.Empty);
             return images;

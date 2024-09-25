@@ -11,5 +11,5 @@ public interface IDockerService
     public Task<string> GetStatus(string id);
     public Task<ICollection<ImagesListResponse>> ListImages(string value);
     public  Task<string> CreateContainerFromImage(string name, string image);
-
+    public Task Delete(string id);
 }
